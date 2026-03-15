@@ -1,7 +1,32 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="400" height="400">
-  <rect width="400" height="400" fill="#f0e6d6"/>
-  <circle cx="200" cy="180" rx="80" ry="30" fill="#cdab7e" stroke="#b17a43" stroke-width="2"/>
-  <ellipse cx="200" cy="180" rx="80" ry="30" fill="none" stroke="#9a6338" stroke-width="2"/>
-  <path d="M120 180 Q120 280 200 280 Q280 280 280 180" fill="#cdab7e" stroke="#9a6338" stroke-width="2"/>
-  <text x="200" y="340" text-anchor="middle" font-family="serif" font-size="18" fill="#7d4d30">Ceramic</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#f0e8dd"/>
+      <stop offset="100%" stop-color="#e5dbd0"/>
+    </linearGradient>
+    <linearGradient id="pot-body" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#b89878"/>
+      <stop offset="50%" stop-color="#c8a888"/>
+      <stop offset="100%" stop-color="#a88868"/>
+    </linearGradient>
+  </defs>
+  <rect width="400" height="400" fill="url(#bg)" rx="12"/>
+  <!-- Shadow -->
+  <ellipse cx="200" cy="312" rx="72" ry="12" fill="#d0c4b2" opacity="0.35"/>
+  <!-- Simple pot/vessel shape -->
+  <path d="M148 160 Q138 200 135 250 Q133 290 145 305 Q160 315 200 315 Q240 315 255 305 Q267 290 265 250 Q262 200 252 160 Z" fill="url(#pot-body)" stroke="#a08060" stroke-width="1"/>
+  <!-- Rim -->
+  <ellipse cx="200" cy="160" rx="52" ry="14" fill="#c8a888" stroke="#a08060" stroke-width="1"/>
+  <ellipse cx="200" cy="160" rx="44" ry="10" fill="#b09070"/>
+  <!-- Inner shadow -->
+  <ellipse cx="200" cy="162" rx="38" ry="7" fill="#8a7058"/>
+  <!-- Highlight -->
+  <path d="M162 175 Q158 225 160 290" stroke="#d8c0a0" stroke-width="2.5" fill="none" opacity="0.4"/>
+  <!-- Decorative line -->
+  <path d="M148 230 Q200 240 252 230" stroke="#a08060" stroke-width="0.8" fill="none" opacity="0.3"/>
+  <!-- Potter's wheel mark -->
+  <circle cx="200" cy="310" r="8" fill="#b89878" stroke="#a08060" stroke-width="0.5" opacity="0.4"/>
+  <!-- Label -->
+  <text x="200" y="355" text-anchor="middle" font-family="Georgia, serif" font-size="14" fill="#a08868" letter-spacing="2">CERAMICS</text>
+  <text x="200" y="375" text-anchor="middle" font-family="Georgia, serif" font-size="11" fill="#b0a088" letter-spacing="1">Handcrafted Pottery</text>
 </svg>
