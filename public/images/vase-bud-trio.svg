@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#f2ebe0"/>
+      <stop offset="100%" stop-color="#e8dfd0"/>
+    </linearGradient>
+    <linearGradient id="vase1" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#a0755a"/>
+      <stop offset="50%" stop-color="#b8886a"/>
+      <stop offset="100%" stop-color="#8e6548"/>
+    </linearGradient>
+    <linearGradient id="vase2" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#7a8e6a"/>
+      <stop offset="50%" stop-color="#90a57e"/>
+      <stop offset="100%" stop-color="#6a7e5a"/>
+    </linearGradient>
+    <linearGradient id="vase3" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#b89878"/>
+      <stop offset="50%" stop-color="#ccac8e"/>
+      <stop offset="100%" stop-color="#a68868"/>
+    </linearGradient>
+  </defs>
+  <rect width="400" height="400" fill="url(#bg)" rx="12"/>
+  <!-- Shadows -->
+  <ellipse cx="112" cy="332" rx="42" ry="8" fill="#d0c4b2" opacity="0.35"/>
+  <ellipse cx="200" cy="342" rx="37" ry="7" fill="#d0c4b2" opacity="0.35"/>
+  <ellipse cx="293" cy="327" rx="40" ry="7" fill="#d0c4b2" opacity="0.35"/>
+  <!-- Vase 1 - tall, brown -->
+  <path d="M94 157 Q82 202 80 262 Q78 312 92 327 Q102 332 112 332 Q122 332 132 327 Q144 312 142 262 Q140 202 130 157 Z" fill="url(#vase1)"/>
+  <path d="M100 157 Q100 142 102 132 L122 132 Q124 142 124 157 Z" fill="#b8886a"/>
+  <ellipse cx="112" cy="132" rx="11" ry="4" fill="#a0755a"/>
+  <ellipse cx="112" cy="132" rx="7" ry="2.5" fill="#8e6548"/>
+  <path d="M94 172 Q90 222 92 292" stroke="#c89e7e" stroke-width="2" fill="none" opacity="0.4"/>
+  <!-- Dried flower in vase 1 -->
+  <path d="M112 132 Q107 102 102 82" stroke="#c8a880" stroke-width="1.5" fill="none"/>
+  <circle cx="101" cy="80" r="4" fill="#d4a878" opacity="0.6"/>
+  <!-- Vase 2 - short round, sage green -->
+  <path d="M180 212 Q168 242 165 282 Q163 322 180 340 Q190 344 200 344 Q210 344 220 340 Q237 322 235 282 Q232 242 220 212 Z" fill="url(#vase2)"/>
+  <path d="M188 212 Q190 197 192 190 L208 190 Q210 197 212 212 Z" fill="#90a57e"/>
+  <ellipse cx="200" cy="190" rx="9" ry="3.5" fill="#7a8e6a"/>
+  <ellipse cx="200" cy="190" rx="6" ry="2" fill="#6a7e5a"/>
+  <path d="M180 227 Q178 267 180 322" stroke="#a0b890" stroke-width="2" fill="none" opacity="0.4"/>
+  <!-- Small sprig in vase 2 -->
+  <path d="M200 190 Q195 167 192 152" stroke="#6b8c42" stroke-width="1.5" fill="none"/>
+  <path d="M192 157 Q185 150 182 147" stroke="#6b8c42" stroke-width="1" fill="none"/>
+  <path d="M192 162 Q199 155 203 152" stroke="#6b8c42" stroke-width="1" fill="none"/>
+  <!-- Vase 3 - medium, warm tan -->
+  <path d="M275 182 Q262 217 260 272 Q258 307 272 322 Q282 327 295 327 Q308 327 318 322 Q332 307 330 272 Q328 217 315 182 Z" fill="url(#vase3)"/>
+  <path d="M282 182 Q283 170 285 162 L305 162 Q307 170 308 182 Z" fill="#ccac8e"/>
+  <ellipse cx="295" cy="162" rx="10" ry="3.5" fill="#b89878"/>
+  <ellipse cx="295" cy="162" rx="7" ry="2" fill="#a68868"/>
+  <path d="M278 197 Q275 242 277 307" stroke="#d8bc9e" stroke-width="2" fill="none" opacity="0.4"/>
+  <!-- Label -->
+  <text x="200" y="385" text-anchor="middle" font-family="Georgia, serif" font-size="14" fill="#8b7e6a" letter-spacing="2">BUD VASE TRIO</text>
+</svg>
