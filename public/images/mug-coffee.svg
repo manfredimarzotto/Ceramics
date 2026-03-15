@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#f0e8e0"/>
+      <stop offset="100%" stop-color="#e5dad0"/>
+    </linearGradient>
+    <linearGradient id="mug-body" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#8b6e5a"/>
+      <stop offset="50%" stop-color="#a0806a"/>
+      <stop offset="100%" stop-color="#7a5d48"/>
+    </linearGradient>
+    <linearGradient id="drip-glaze" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#e8d5c0"/>
+      <stop offset="100%" stop-color="#d4bc9e"/>
+    </linearGradient>
+  </defs>
+  <rect width="400" height="400" fill="url(#bg)" rx="12"/>
+  <!-- Shadow -->
+  <ellipse cx="195" cy="332" rx="92" ry="14" fill="#d0c0b0" opacity="0.4"/>
+  <!-- Mug body -->
+  <path d="M132 142 L127 312 Q127 332 200 332 Q273 332 273 312 L268 142 Z" fill="url(#mug-body)"/>
+  <!-- Drip glaze top section -->
+  <path d="M132 142 L134 202 Q200 212 266 202 L268 142 Z" fill="url(#drip-glaze)"/>
+  <!-- Drip effects -->
+  <path d="M152 202 Q151 242 152 252" stroke="#e0ccae" stroke-width="8" fill="none" stroke-linecap="round" opacity="0.8"/>
+  <path d="M177 207 Q176 262 177 272" stroke="#dccaa8" stroke-width="6" fill="none" stroke-linecap="round" opacity="0.7"/>
+  <path d="M212 210 Q211 237 212 242" stroke="#e0ccae" stroke-width="7" fill="none" stroke-linecap="round" opacity="0.8"/>
+  <path d="M247 205 Q246 252 247 260" stroke="#dccaa8" stroke-width="5" fill="none" stroke-linecap="round" opacity="0.7"/>
+  <path d="M260 202 Q259 227 260 232" stroke="#e0ccae" stroke-width="6" fill="none" stroke-linecap="round" opacity="0.6"/>
+  <!-- Rim -->
+  <ellipse cx="200" cy="142" rx="68" ry="18" fill="#9e7e66"/>
+  <ellipse cx="200" cy="142" rx="62" ry="14" fill="#6b4e3a"/>
+  <!-- Coffee inside -->
+  <ellipse cx="200" cy="144" rx="56" ry="11" fill="#4a3428"/>
+  <!-- Handle -->
+  <path d="M268 182 Q328 192 328 242 Q328 292 268 297" stroke="#8b6e5a" stroke-width="14" fill="none" stroke-linecap="round"/>
+  <path d="M268 192 Q316 200 316 242 Q316 284 268 290" stroke="#a0806a" stroke-width="6" fill="none" stroke-linecap="round"/>
+  <!-- Label -->
+  <text x="200" y="375" text-anchor="middle" font-family="Georgia, serif" font-size="14" fill="#8b6e5a" letter-spacing="2">COFFEE MUG</text>
+</svg>

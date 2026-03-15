@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#f0ede8"/>
+      <stop offset="100%" stop-color="#e5e0d8"/>
+    </linearGradient>
+    <linearGradient id="vase-body" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#e8e4de"/>
+      <stop offset="40%" stop-color="#f5f2ed"/>
+      <stop offset="100%" stop-color="#d8d3cb"/>
+    </linearGradient>
+  </defs>
+  <rect width="400" height="400" fill="url(#bg)" rx="12"/>
+  <!-- Shadow -->
+  <ellipse cx="200" cy="342" rx="68" ry="12" fill="#cdc5b8" opacity="0.4"/>
+  <!-- Vase body -->
+  <path d="M165 120 Q142 165 138 225 Q136 285 156 322 Q168 342 200 342 Q232 342 244 322 Q264 285 262 225 Q258 165 235 120 Z" fill="url(#vase-body)" stroke="#c8c0b4" stroke-width="1"/>
+  <!-- Vase neck -->
+  <path d="M175 120 Q175 100 180 86 L220 86 Q225 100 225 120 Z" fill="#f0ebe4" stroke="#c8c0b4" stroke-width="1"/>
+  <!-- Rim -->
+  <ellipse cx="200" cy="86" rx="20" ry="6" fill="#e8e3dc" stroke="#c8c0b4" stroke-width="1"/>
+  <ellipse cx="200" cy="86" rx="14" ry="4" fill="#d8d3cb"/>
+  <!-- Highlight -->
+  <path d="M174 142 Q170 205 174 285 Q177 312 184 332" stroke="#ffffff" stroke-width="3" fill="none" opacity="0.55"/>
+  <!-- Subtle line detail -->
+  <path d="M154 252 Q200 262 246 252" stroke="#c0b8ac" stroke-width="0.7" fill="none" opacity="0.5"/>
+  <path d="M156 272 Q200 280 244 272" stroke="#c0b8ac" stroke-width="0.7" fill="none" opacity="0.5"/>
+  <!-- Label -->
+  <text x="200" y="382" text-anchor="middle" font-family="Georgia, serif" font-size="14" fill="#9e968a" letter-spacing="2">PORCELAIN VASE</text>
+</svg>

@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="400" height="400">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#F0EBE2"/>
+      <stop offset="100%" stop-color="#E5DDD0"/>
+    </linearGradient>
+    <linearGradient id="platter-face" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#F8F2E8"/>
+      <stop offset="100%" stop-color="#EEE5D5"/>
+    </linearGradient>
+  </defs>
+  <rect width="400" height="400" fill="url(#bg)" rx="12"/>
+  <!-- Shadow -->
+  <ellipse cx="200" cy="300" rx="155" ry="35" fill="#D4C8B5" opacity="0.35"/>
+  <!-- Platter edge -->
+  <ellipse cx="200" cy="240" rx="160" ry="65" fill="#C8B8A0"/>
+  <!-- Platter face -->
+  <ellipse cx="200" cy="235" rx="160" ry="65" fill="url(#platter-face)"/>
+  <!-- Inner rim -->
+  <ellipse cx="200" cy="235" rx="135" ry="52" fill="none" stroke="#D8CCBA" stroke-width="1.5"/>
+  <!-- Botanical design - stem -->
+  <path d="M160 260 Q200 200 240 250" stroke="#7A9E6A" stroke-width="2" fill="none"/>
+  <path d="M200 215 L200 265" stroke="#7A9E6A" stroke-width="1.5" fill="none"/>
+  <!-- Leaves -->
+  <path d="M200 230 Q180 218 170 225 Q178 235 200 230" fill="#8BAE78" opacity="0.7"/>
+  <path d="M200 230 Q220 218 230 225 Q222 235 200 230" fill="#7A9E6A" opacity="0.7"/>
+  <path d="M175 250 Q165 238 158 245 Q164 252 175 250" fill="#8BAE78" opacity="0.6"/>
+  <path d="M225 248 Q235 236 242 242 Q236 252 225 248" fill="#7A9E6A" opacity="0.6"/>
+  <!-- Small flowers -->
+  <circle cx="185" cy="238" r="4" fill="#D4A0A0" opacity="0.6"/>
+  <circle cx="215" cy="236" r="3.5" fill="#C8908E" opacity="0.6"/>
+  <circle cx="200" cy="252" r="3" fill="#D4A0A0" opacity="0.5"/>
+  <!-- Flower centers -->
+  <circle cx="185" cy="238" r="1.5" fill="#B87878"/>
+  <circle cx="215" cy="236" r="1.5" fill="#B87878"/>
+  <circle cx="200" cy="252" r="1.2" fill="#B87878"/>
+  <!-- Small dots/berries -->
+  <circle cx="170" cy="245" r="2" fill="#8BAE78" opacity="0.5"/>
+  <circle cx="232" cy="243" r="2" fill="#8BAE78" opacity="0.5"/>
+  <circle cx="195" cy="260" r="1.5" fill="#7A9E6A" opacity="0.4"/>
+  <circle cx="208" cy="258" r="1.5" fill="#7A9E6A" opacity="0.4"/>
+  <!-- Label -->
+  <text x="200" y="365" text-anchor="middle" font-family="Georgia, serif" font-size="16" fill="#8B7E6A" letter-spacing="2">SERVING PLATTER</text>
+</svg>

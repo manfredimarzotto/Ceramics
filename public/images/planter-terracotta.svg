@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#f5ede0"/>
+      <stop offset="100%" stop-color="#ede2d2"/>
+    </linearGradient>
+    <linearGradient id="pot-body" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#c4714a"/>
+      <stop offset="45%" stop-color="#d4825a"/>
+      <stop offset="100%" stop-color="#b86540"/>
+    </linearGradient>
+    <linearGradient id="pot-rim" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#d88c62"/>
+      <stop offset="100%" stop-color="#c4714a"/>
+    </linearGradient>
+  </defs>
+  <rect width="400" height="400" fill="url(#bg)" rx="12"/>
+  <!-- Shadow -->
+  <ellipse cx="200" cy="342" rx="96" ry="15" fill="#d4c4b0" opacity="0.4"/>
+  <!-- Saucer -->
+  <ellipse cx="200" cy="337" rx="102" ry="18" fill="#c4714a"/>
+  <ellipse cx="200" cy="332" rx="102" ry="18" fill="#d88c62"/>
+  <ellipse cx="200" cy="332" rx="87" ry="14" fill="#c47850"/>
+  <!-- Pot body -->
+  <path d="M122 162 L137 322 Q142 337 200 337 Q258 337 263 322 L278 162 Z" fill="url(#pot-body)"/>
+  <!-- Rim band -->
+  <rect x="114" y="147" width="172" height="24" rx="3" fill="url(#pot-rim)"/>
+  <!-- Rim top -->
+  <ellipse cx="200" cy="147" rx="86" ry="16" fill="#d88c62"/>
+  <ellipse cx="200" cy="147" rx="76" ry="12" fill="#b86540"/>
+  <!-- Soil inside -->
+  <ellipse cx="200" cy="150" rx="70" ry="9" fill="#5c3d2e"/>
+  <!-- Small plant -->
+  <path d="M200 150 L200 102" stroke="#6b8c42" stroke-width="3" fill="none"/>
+  <path d="M200 122 Q180 102 175 87" stroke="#6b8c42" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+  <path d="M200 112 Q220 92 228 80" stroke="#7a9e4e" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+  <path d="M200 132 Q175 120 168 110" stroke="#7a9e4e" stroke-width="2" fill="none" stroke-linecap="round"/>
+  <ellipse cx="175" cy="85" rx="12" ry="8" fill="#6b8c42" transform="rotate(-30 175 85)"/>
+  <ellipse cx="230" cy="78" rx="14" ry="8" fill="#7a9e4e" transform="rotate(25 230 78)"/>
+  <ellipse cx="166" cy="108" rx="11" ry="7" fill="#7a9e4e" transform="rotate(-20 166 108)"/>
+  <!-- Terracotta texture lines -->
+  <path d="M142 222 Q200 232 258 222" stroke="#a85c38" stroke-width="0.8" fill="none" opacity="0.3"/>
+  <path d="M147 262 Q200 270 253 262" stroke="#a85c38" stroke-width="0.8" fill="none" opacity="0.3"/>
+  <!-- Highlight -->
+  <path d="M152 172 Q150 242 154 312" stroke="#e09872" stroke-width="3" fill="none" opacity="0.4"/>
+  <!-- Label -->
+  <text x="200" y="385" text-anchor="middle" font-family="Georgia, serif" font-size="14" fill="#b86540" letter-spacing="2">TERRACOTTA PLANTER</text>
+</svg>

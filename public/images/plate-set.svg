@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#f2ede6"/>
+      <stop offset="100%" stop-color="#e6dfd4"/>
+    </linearGradient>
+    <linearGradient id="plate-face" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#f0e8dc"/>
+      <stop offset="100%" stop-color="#e4d9ca"/>
+    </linearGradient>
+  </defs>
+  <rect width="400" height="400" fill="url(#bg)" rx="12"/>
+  <!-- Shadow -->
+  <ellipse cx="200" cy="312" rx="132" ry="22" fill="#d4c8b8" opacity="0.35"/>
+  <!-- Bottom plate edge -->
+  <ellipse cx="200" cy="282" rx="132" ry="42" fill="#c8b8a2"/>
+  <ellipse cx="200" cy="277" rx="132" ry="42" fill="#ddd0c0"/>
+  <!-- Speckles bottom plate -->
+  <circle cx="142" cy="274" r="1.5" fill="#a89880" opacity="0.6"/>
+  <circle cx="182" cy="267" r="1" fill="#a89880" opacity="0.5"/>
+  <circle cx="252" cy="272" r="1.5" fill="#a89880" opacity="0.6"/>
+  <circle cx="222" cy="280" r="1" fill="#a89880" opacity="0.5"/>
+  <!-- Middle plate edge -->
+  <ellipse cx="200" cy="257" rx="127" ry="40" fill="#c8b8a2"/>
+  <ellipse cx="200" cy="252" rx="127" ry="40" fill="#e4d9ca"/>
+  <!-- Speckles middle plate -->
+  <circle cx="157" cy="250" r="1.5" fill="#a89880" opacity="0.6"/>
+  <circle cx="197" cy="244" r="1" fill="#a89880" opacity="0.5"/>
+  <circle cx="237" cy="252" r="1.5" fill="#a89880" opacity="0.6"/>
+  <circle cx="272" cy="247" r="1" fill="#a89880" opacity="0.5"/>
+  <circle cx="167" cy="257" r="1" fill="#a89880" opacity="0.4"/>
+  <!-- Top plate -->
+  <ellipse cx="200" cy="232" rx="122" ry="38" fill="#c2b2a0"/>
+  <ellipse cx="200" cy="227" rx="122" ry="38" fill="url(#plate-face)"/>
+  <!-- Inner ring -->
+  <ellipse cx="200" cy="227" rx="87" ry="27" fill="none" stroke="#d0c4b4" stroke-width="1.2"/>
+  <!-- Center well -->
+  <ellipse cx="200" cy="227" rx="62" ry="19" fill="#e8ddce" opacity="0.6"/>
+  <!-- Speckles top plate -->
+  <circle cx="162" cy="224" r="2" fill="#a89880" opacity="0.5"/>
+  <circle cx="192" cy="220" r="1.5" fill="#b0a090" opacity="0.4"/>
+  <circle cx="232" cy="227" r="1.5" fill="#a89880" opacity="0.5"/>
+  <circle cx="212" cy="217" r="1" fill="#a89880" opacity="0.6"/>
+  <circle cx="177" cy="232" r="1" fill="#b0a090" opacity="0.4"/>
+  <circle cx="252" cy="222" r="2" fill="#a89880" opacity="0.4"/>
+  <circle cx="147" cy="230" r="1" fill="#a89880" opacity="0.5"/>
+  <circle cx="202" cy="234" r="1.5" fill="#a89880" opacity="0.3"/>
+  <circle cx="267" cy="230" r="1" fill="#a89880" opacity="0.5"/>
+  <circle cx="222" cy="212" r="1" fill="#b0a090" opacity="0.4"/>
+  <!-- Label -->
+  <text x="200" y="368" text-anchor="middle" font-family="Georgia, serif" font-size="14" fill="#9e9080" letter-spacing="2">DINNER PLATES</text>
+</svg>
