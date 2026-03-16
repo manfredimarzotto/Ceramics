@@ -2,35 +2,51 @@
 
 import { useEffect, useState } from "react";
 import { Order } from "@/types";
+import { useToast } from "@/components/Toast";
 
 const statusOptions: Order["status"][] = ["pending", "confirmed", "shipped", "delivered"];
 
 export default function AdminOrdersPage() {
   const [orders, setOrders] = useState<Order[]>([]);
   const [loading, setLoading] = useState(true);
+  const { showToast } = useToast();
 
-  const fetchOrders = () => {
-    fetch("/api/orders")
-      .then((res) => res.json())
-      .then((data) => {
-        setOrders(data.sort((a: Order, b: Order) =>
-          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-        ));
-        setLoading(false);
-      });
+  const fetchOrders = async () => {
+    try {
+      const res = await fetch("/api/orders");
+      if (!res.ok) throw new Error("Failed to fetch");
+      const data = await res.json();
+      setOrders(
+        data.sort(
+          (a: Order, b: Order) =>
+            new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+        )
+      );
+    } catch {
+      showToast("Failed to load orders", "error");
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
     fetchOrders();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const updateStatus = async (id: string, status: Order["status"]) => {
-    await fetch(`/api/orders/${id}`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ status }),
-    });
-    fetchOrders();
+    try {
+      const res = await fetch(`/api/orders/${id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ status }),
+      });
+      if (!res.ok) throw new Error("Failed to update");
+      showToast(`Order status updated to ${status}`, "success");
+      fetchOrders();
+    } catch {
+      showToast("Failed to update order status", "error");
+    }
   };
 
   if (loading) {

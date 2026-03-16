@@ -1,31 +1,35 @@
 import { NextRequest, NextResponse } from "next/server";
 import { stripe } from "@/lib/stripe";
+import { checkoutSchema } from "@/lib/validation";
 
 export async function POST(request: NextRequest) {
   try {
-    const { items } = await request.json();
+    const body = await request.json();
+    const result = checkoutSchema.safeParse(body);
 
-    if (!items || items.length === 0) {
-      return NextResponse.json({ error: "No items provided" }, { status: 400 });
+    if (!result.success) {
+      return NextResponse.json(
+        { error: "Validation failed", details: result.error.flatten().fieldErrors },
+        { status: 400 }
+      );
     }
 
+    const { items } = result.data;
     const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
 
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ["card"],
       mode: "payment",
-      line_items: items.map(
-        (item: { name: string; price: number; quantity: number }) => ({
-          price_data: {
-            currency: "usd",
-            product_data: {
-              name: item.name,
-            },
-            unit_amount: Math.round(item.price * 100),
+      line_items: items.map((item) => ({
+        price_data: {
+          currency: "usd",
+          product_data: {
+            name: item.name,
           },
-          quantity: item.quantity,
-        })
-      ),
+          unit_amount: Math.round(item.price * 100),
+        },
+        quantity: item.quantity,
+      })),
       shipping_address_collection: {
         allowed_countries: ["US", "CA", "GB", "AU"],
       },

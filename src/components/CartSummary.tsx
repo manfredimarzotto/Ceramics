@@ -1,10 +1,12 @@
 "use client";
 
 import { useCart } from "@/context/CartContext";
+import { useToast } from "@/components/Toast";
 import { useState } from "react";
 
 export default function CartSummary() {
   const { totalPrice, items } = useCart();
+  const { showToast } = useToast();
   const [loading, setLoading] = useState(false);
 
   const handleCheckout = async () => {
@@ -28,10 +30,13 @@ export default function CartSummary() {
       if (data.url) {
         window.location.href = data.url;
       } else {
-        alert("Could not create checkout session. Please check your Stripe configuration.");
+        showToast(
+          "Could not create checkout session. Please check your Stripe configuration.",
+          "error"
+        );
       }
     } catch {
-      alert("An error occurred. Please try again.");
+      showToast("An error occurred. Please try again.", "error");
     } finally {
       setLoading(false);
     }

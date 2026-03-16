@@ -3,12 +3,15 @@
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { Product } from "@/types";
+import { useToast } from "@/components/Toast";
 
 export default function EditProductPage() {
   const params = useParams();
   const router = useRouter();
+  const { showToast } = useToast();
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [error, setError] = useState("");
   const [formData, setFormData] = useState({
     name: "",
     description: "",
@@ -21,7 +24,10 @@ export default function EditProductPage() {
 
   useEffect(() => {
     fetch(`/api/products/${params.id}`)
-      .then((res) => res.json())
+      .then((res) => {
+        if (!res.ok) throw new Error("Product not found");
+        return res.json();
+      })
       .then((product: Product) => {
         setFormData({
           name: product.name,
@@ -33,25 +39,53 @@ export default function EditProductPage() {
           featured: product.featured,
         });
         setLoading(false);
+      })
+      .catch(() => {
+        setError("Failed to load product");
+        setLoading(false);
       });
   }, [params.id]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setSaving(true);
-    await fetch(`/api/products/${params.id}`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        ...formData,
-        price: parseFloat(formData.price),
-      }),
-    });
-    router.push("/admin/products");
+    try {
+      const res = await fetch(`/api/products/${params.id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          ...formData,
+          price: parseFloat(formData.price),
+        }),
+      });
+      if (!res.ok) {
+        const data = await res.json();
+        throw new Error(data.error || "Failed to update product");
+      }
+      showToast("Product updated successfully", "success");
+      router.push("/admin/products");
+    } catch (err) {
+      showToast(err instanceof Error ? err.message : "Failed to update product", "error");
+      setSaving(false);
+    }
   };
 
   if (loading) {
     return <p className="text-gray-500">Loading product...</p>;
+  }
+
+  if (error) {
+    return (
+      <div className="text-center py-12">
+        <p className="text-red-600 mb-4">{error}</p>
+        <button
+          onClick={() => router.push("/admin/products")}
+          className="text-clay-600 hover:text-clay-700 text-sm"
+        >
+          Back to Products
+        </button>
+      </div>
+    );
   }
 
   return (

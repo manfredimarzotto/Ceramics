@@ -3,11 +3,13 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Product } from "@/types";
+import { useToast } from "@/components/Toast";
 
 export default function AdminProductsPage() {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
+  const { showToast } = useToast();
   const [formData, setFormData] = useState({
     name: "",
     description: "",
@@ -18,46 +20,66 @@ export default function AdminProductsPage() {
     featured: false,
   });
 
-  const fetchProducts = () => {
-    fetch("/api/products")
-      .then((res) => res.json())
-      .then((data) => {
-        setProducts(data);
-        setLoading(false);
-      });
+  const fetchProducts = async () => {
+    try {
+      const res = await fetch("/api/products");
+      if (!res.ok) throw new Error("Failed to fetch");
+      const data = await res.json();
+      setProducts(data);
+    } catch {
+      showToast("Failed to load products", "error");
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
     fetchProducts();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleCreate = async (e: React.FormEvent) => {
     e.preventDefault();
-    await fetch("/api/products", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        ...formData,
-        price: parseFloat(formData.price),
-      }),
-    });
-    setFormData({
-      name: "",
-      description: "",
-      price: "",
-      image: "/images/placeholder.svg",
-      category: "",
-      inStock: true,
-      featured: false,
-    });
-    setShowForm(false);
-    fetchProducts();
+    try {
+      const res = await fetch("/api/products", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          ...formData,
+          price: parseFloat(formData.price),
+        }),
+      });
+      if (!res.ok) {
+        const data = await res.json();
+        throw new Error(data.error || "Failed to create product");
+      }
+      setFormData({
+        name: "",
+        description: "",
+        price: "",
+        image: "/images/placeholder.svg",
+        category: "",
+        inStock: true,
+        featured: false,
+      });
+      setShowForm(false);
+      showToast("Product created successfully", "success");
+      fetchProducts();
+    } catch (err) {
+      showToast(err instanceof Error ? err.message : "Failed to create product", "error");
+    }
   };
 
   const handleDelete = async (id: string) => {
     if (!confirm("Are you sure you want to delete this product?")) return;
-    await fetch(`/api/products/${id}`, { method: "DELETE" });
-    fetchProducts();
+    try {
+      const res = await fetch(`/api/products/${id}`, { method: "DELETE" });
+      if (!res.ok) throw new Error("Failed to delete");
+      showToast("Product deleted", "success");
+      fetchProducts();
+    } catch {
+      showToast("Failed to delete product", "error");
+    }
   };
 
   if (loading) {
