@@ -3,7 +3,12 @@ import ProductCard from "@/components/ProductCard";
 import { getFeaturedProducts } from "@/lib/products";
 
 export default async function HomePage() {
-  const featured = await getFeaturedProducts();
+  let featured;
+  try {
+    featured = await getFeaturedProducts();
+  } catch {
+    featured = [];
+  }
 
   return (
     <div>
