@@ -45,6 +45,16 @@ git merge origin/main
 - Avoid reformatting or restructuring files that are also being changed on main.
 - When both branches modify the same function, coordinate to avoid overlapping edits.
 
+## Deployment
+
+This is a full-stack Next.js app (API routes, Prisma database, server components). It **cannot** be deployed to GitHub Pages — Pages only serves static files, so it falls back to rendering README.md as the site. Deploy to a platform that supports Node.js server-side rendering:
+
+- **Vercel** (recommended) — native Next.js support, free tier available
+- **Netlify** — with the Next.js adapter
+- **Railway / Render** — for full server hosting
+
+If GitHub Pages is enabled on this repo, disable it in Settings > Pages to avoid confusion.
+
 ## Code Conventions
 
 - Server components use `async` and fetch data directly via Prisma.
