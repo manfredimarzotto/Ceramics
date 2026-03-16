@@ -1,5 +1,8 @@
 # Ceramics
 
+https://manfredimarzotto.github.io/Ceramics/
+
+
 A full-featured e-commerce store for handcrafted ceramic pottery and artisan homeware, built with Next.js.
 
 ## About
