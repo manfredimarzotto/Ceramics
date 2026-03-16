@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 
 const navItems = [
   { href: "/admin", label: "Dashboard", icon: "M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" },
@@ -11,6 +11,18 @@ const navItems = [
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
+  const router = useRouter();
+
+  // Don't show admin layout on login page
+  if (pathname === "/admin/login") {
+    return <>{children}</>;
+  }
+
+  const handleLogout = async () => {
+    await fetch("/api/admin/logout", { method: "POST" });
+    router.push("/admin/login");
+    router.refresh();
+  };
 
   return (
     <div className="min-h-[calc(100vh-4rem)] flex">
@@ -37,10 +49,16 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             );
           })}
         </nav>
-        <div className="mt-8 pt-8 border-t border-gray-700">
-          <Link href="/" className="text-sm text-gray-400 hover:text-white transition-colors">
+        <div className="mt-8 pt-8 border-t border-gray-700 space-y-3">
+          <Link href="/" className="block text-sm text-gray-400 hover:text-white transition-colors">
             &larr; Back to Store
           </Link>
+          <button
+            onClick={handleLogout}
+            className="block text-sm text-gray-400 hover:text-red-400 transition-colors"
+          >
+            Sign Out
+          </button>
         </div>
       </aside>
 

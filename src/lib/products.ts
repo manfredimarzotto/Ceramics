@@ -1,61 +1,92 @@
-import fs from "fs";
-import path from "path";
-import { Product } from "@/types";
+import { prisma } from "@/lib/db";
+import type { Product } from "@/types";
 
-const dataPath = path.join(process.cwd(), "data", "products.json");
-
-export function getProducts(): Product[] {
-  const data = fs.readFileSync(dataPath, "utf-8");
-  return JSON.parse(data);
+export async function getProducts(): Promise<Product[]> {
+  const products = await prisma.product.findMany({
+    orderBy: { createdAt: "desc" },
+  });
+  return products.map(mapProduct);
 }
 
-export function getProductById(id: string): Product | undefined {
-  const products = getProducts();
-  return products.find((p) => p.id === id);
+export async function getProductById(id: string): Promise<Product | null> {
+  const product = await prisma.product.findUnique({ where: { id } });
+  return product ? mapProduct(product) : null;
 }
 
-export function getProductsByCategory(category: string): Product[] {
-  const products = getProducts();
-  return products.filter((p) => p.category === category);
+export async function getProductsByCategory(category: string): Promise<Product[]> {
+  const products = await prisma.product.findMany({
+    where: { category },
+    orderBy: { createdAt: "desc" },
+  });
+  return products.map(mapProduct);
 }
 
-export function getFeaturedProducts(): Product[] {
-  const products = getProducts();
-  return products.filter((p) => p.featured);
+export async function getFeaturedProducts(): Promise<Product[]> {
+  const products = await prisma.product.findMany({
+    where: { featured: true },
+    orderBy: { createdAt: "desc" },
+  });
+  return products.map(mapProduct);
 }
 
-export function getCategories(): string[] {
-  const products = getProducts();
-  return [...new Set(products.map((p) => p.category))];
+export async function getCategories(): Promise<string[]> {
+  const products = await prisma.product.findMany({
+    select: { category: true },
+    distinct: ["category"],
+  });
+  return products.map((p) => p.category);
 }
 
-export function createProduct(product: Omit<Product, "id">): Product {
-  const products = getProducts();
-  const newId = String(
-    Math.max(...products.map((p) => parseInt(p.id)), 0) + 1
-  );
-  const newProduct = { ...product, id: newId };
-  products.push(newProduct);
-  fs.writeFileSync(dataPath, JSON.stringify(products, null, 2));
-  return newProduct;
+export async function createProduct(data: Omit<Product, "id">): Promise<Product> {
+  const product = await prisma.product.create({ data });
+  return mapProduct(product);
 }
 
-export function updateProduct(
+export async function updateProduct(
   id: string,
   updates: Partial<Product>
-): Product | null {
-  const products = getProducts();
-  const index = products.findIndex((p) => p.id === id);
-  if (index === -1) return null;
-  products[index] = { ...products[index], ...updates, id };
-  fs.writeFileSync(dataPath, JSON.stringify(products, null, 2));
-  return products[index];
+): Promise<Product | null> {
+  try {
+    const { id: _id, ...data } = updates;
+    const product = await prisma.product.update({ where: { id }, data });
+    return mapProduct(product);
+  } catch {
+    return null;
+  }
 }
 
-export function deleteProduct(id: string): boolean {
-  const products = getProducts();
-  const filtered = products.filter((p) => p.id !== id);
-  if (filtered.length === products.length) return false;
-  fs.writeFileSync(dataPath, JSON.stringify(filtered, null, 2));
-  return true;
+export async function deleteProduct(id: string): Promise<boolean> {
+  try {
+    await prisma.product.delete({ where: { id } });
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+export async function searchProducts(query: string): Promise<Product[]> {
+  const products = await prisma.product.findMany({
+    where: {
+      OR: [
+        { name: { contains: query } },
+        { description: { contains: query } },
+        { category: { contains: query } },
+      ],
+    },
+    orderBy: { createdAt: "desc" },
+  });
+  return products.map(mapProduct);
+}
+
+function mapProduct(p: { id: string; name: string; description: string; price: number; image: string; category: string; inStock: boolean; featured: boolean }): Product {
+  return {
+    id: p.id,
+    name: p.name,
+    description: p.description,
+    price: p.price,
+    image: p.image,
+    category: p.category,
+    inStock: p.inStock,
+    featured: p.featured,
+  };
 }

@@ -1,39 +1,108 @@
-import fs from "fs";
-import path from "path";
+import { prisma } from "@/lib/db";
 import { Order } from "@/types";
 
-const dataPath = path.join(process.cwd(), "data", "orders.json");
-
-export function getOrders(): Order[] {
-  const data = fs.readFileSync(dataPath, "utf-8");
-  return JSON.parse(data);
+export async function getOrders(): Promise<Order[]> {
+  const orders = await prisma.order.findMany({
+    include: { items: true },
+    orderBy: { createdAt: "desc" },
+  });
+  return orders.map(mapOrder);
 }
 
-export function getOrderById(id: string): Order | undefined {
-  const orders = getOrders();
-  return orders.find((o) => o.id === id);
+export async function getOrderById(id: string): Promise<Order | null> {
+  const order = await prisma.order.findUnique({
+    where: { id },
+    include: { items: true },
+  });
+  return order ? mapOrder(order) : null;
 }
 
-export function createOrder(order: Omit<Order, "id" | "createdAt">): Order {
-  const orders = getOrders();
-  const newOrder: Order = {
-    ...order,
-    id: `ORD-${Date.now()}`,
-    createdAt: new Date().toISOString(),
-  };
-  orders.push(newOrder);
-  fs.writeFileSync(dataPath, JSON.stringify(orders, null, 2));
-  return newOrder;
+export async function createOrder(
+  data: Omit<Order, "id" | "createdAt">
+): Promise<Order> {
+  const order = await prisma.order.create({
+    data: {
+      id: `ORD-${Date.now()}`,
+      total: data.total,
+      customerEmail: data.customerEmail,
+      customerName: data.customerName,
+      shippingLine1: data.shippingAddress.line1,
+      shippingLine2: data.shippingAddress.line2,
+      shippingCity: data.shippingAddress.city,
+      shippingState: data.shippingAddress.state,
+      shippingPostal: data.shippingAddress.postalCode,
+      shippingCountry: data.shippingAddress.country,
+      status: data.status,
+      stripeSessionId: data.stripeSessionId,
+      items: {
+        create: data.items.map((item) => ({
+          productId: item.productId,
+          name: item.name,
+          price: item.price,
+          quantity: item.quantity,
+        })),
+      },
+    },
+    include: { items: true },
+  });
+  return mapOrder(order);
 }
 
-export function updateOrderStatus(
+export async function updateOrderStatus(
   id: string,
   status: Order["status"]
-): Order | null {
-  const orders = getOrders();
-  const index = orders.findIndex((o) => o.id === id);
-  if (index === -1) return null;
-  orders[index].status = status;
-  fs.writeFileSync(dataPath, JSON.stringify(orders, null, 2));
-  return orders[index];
+): Promise<Order | null> {
+  try {
+    const order = await prisma.order.update({
+      where: { id },
+      data: { status },
+      include: { items: true },
+    });
+    return mapOrder(order);
+  } catch {
+    return null;
+  }
+}
+
+interface DbOrder {
+  id: string;
+  total: number;
+  customerEmail: string;
+  customerName: string;
+  shippingLine1: string;
+  shippingLine2: string | null;
+  shippingCity: string;
+  shippingState: string;
+  shippingPostal: string;
+  shippingCountry: string;
+  status: string;
+  stripeSessionId: string;
+  createdAt: Date;
+  items: { productId: string; name: string; price: number; quantity: number }[];
+}
+
+function mapOrder(o: DbOrder): Order {
+  return {
+    id: o.id,
+    items: o.items.map((i) => ({
+      productId: i.productId,
+      name: i.name,
+      price: i.price,
+      quantity: i.quantity,
+    })),
+    total: o.total,
+    customerEmail: o.customerEmail,
+    customerName: o.customerName,
+    shippingAddress: {
+      line1: o.shippingLine1,
+      line2: o.shippingLine2 || undefined,
+      city: o.shippingCity,
+      state: o.shippingState,
+      postalCode: o.shippingPostal,
+      country: o.shippingCountry,
+    },
+    status: o.status as Order["status"],
+    stripeSessionId: o.stripeSessionId,
+    createdAt: o.createdAt.toISOString(),
+  };
 }
