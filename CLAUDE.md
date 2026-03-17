@@ -2,7 +2,7 @@
 
 ## Project Overview
 
-Ceramics is a Next.js 14 e-commerce store for handcrafted pottery. It uses TypeScript, Tailwind CSS, Prisma (SQLite), and Stripe for payments. There is a password-protected admin panel at `/admin`.
+Ceramics is a Next.js 14 e-commerce store for handcrafted pottery. It uses TypeScript, Tailwind CSS, Prisma (PostgreSQL via Supabase), and Stripe for payments. There is a password-protected admin panel at `/admin`.
 
 ## Common Commands
 

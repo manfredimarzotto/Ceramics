@@ -40,7 +40,7 @@ It serves as a production-ready foundation for small artisan businesses looking 
 | Framework | Next.js 14 (App Router) |
 | Language | TypeScript |
 | Styling | Tailwind CSS |
-| Database | SQLite via Prisma |
+| Database | PostgreSQL (Supabase) via Prisma |
 | Payments | Stripe |
 | Auth | JWT sessions (jose) |
 | Validation | Zod |
@@ -77,7 +77,8 @@ cp .env.example .env
 | `NEXT_PUBLIC_BASE_URL` | Your app URL (default `http://localhost:3000`) |
 | `ADMIN_PASSWORD` | Password for the admin panel |
 | `ADMIN_SESSION_SECRET` | Random string used to sign session tokens |
-| `DATABASE_URL` | SQLite database path (default `file:./dev.db`) |
+| `DATABASE_URL` | Supabase connection string (pooled, port 6543) |
+| `DIRECT_URL` | Supabase direct connection string (port 5432) |
 
 ### Database Setup
 
