@@ -27,6 +27,11 @@ export async function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
+  // Allow the login API endpoint without authentication
+  if (pathname === "/api/admin/login") {
+    return NextResponse.next();
+  }
+
   // Check session for all other admin paths
   const token = request.cookies.get(COOKIE_NAME)?.value;
   if (!token || !(await verifyToken(token))) {
