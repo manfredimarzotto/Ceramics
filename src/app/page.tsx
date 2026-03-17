@@ -1,9 +1,10 @@
 import HeroSection from "@/components/HeroSection";
 import ProductCard from "@/components/ProductCard";
 import { getFeaturedProducts } from "@/lib/products";
+import { Product } from "@/types";
 
 export default async function HomePage() {
-  let featured;
+  let featured: Product[];
   try {
     featured = await getFeaturedProducts();
   } catch {
