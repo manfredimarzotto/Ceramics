@@ -37,7 +37,7 @@ function SuccessContent() {
         </p>
       )}
       <Link
-        href="/products"
+        href="/"
         className="px-6 py-3 bg-clay-600 text-white font-semibold rounded-md hover:bg-clay-700 transition-colors"
       >
         Continue Shopping
