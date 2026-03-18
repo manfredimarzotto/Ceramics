@@ -28,15 +28,27 @@ export async function POST(request: NextRequest) {
     const session = event.data.object as Stripe.Checkout.Session;
 
     try {
-      const lineItems = await stripe.checkout.sessions.listLineItems(session.id);
+      const lineItems = await stripe.checkout.sessions.listLineItems(session.id, {
+        expand: ["data.price.product"],
+      });
+
+      const orderItems = lineItems.data
+        .filter((item) => {
+          const product = item.price?.product as Stripe.Product | undefined;
+          return product?.name !== "Shipping";
+        })
+        .map((item) => {
+          const product = item.price?.product as Stripe.Product | undefined;
+          return {
+            productId: product?.metadata?.productId || item.id,
+            name: item.description || "Unknown",
+            price: (item.price?.unit_amount || 0) / 100,
+            quantity: item.quantity || 1,
+          };
+        });
 
       await createOrder({
-        items: lineItems.data.map((item) => ({
-          productId: item.id,
-          name: item.description || "Unknown",
-          price: (item.amount_total || 0) / 100,
-          quantity: item.quantity || 1,
-        })),
+        items: orderItems,
         total: (session.amount_total || 0) / 100,
         customerEmail: session.customer_details?.email || "",
         customerName: session.customer_details?.name || "",

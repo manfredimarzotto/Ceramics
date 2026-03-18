@@ -1,5 +1,6 @@
 import { prisma } from "@/lib/db";
 import { Order } from "@/types";
+import type { OrderStatus } from "@prisma/client";
 
 export async function getOrders(): Promise<Order[]> {
   const orders = await prisma.order.findMany({
@@ -75,7 +76,7 @@ interface DbOrder {
   shippingState: string;
   shippingPostal: string;
   shippingCountry: string;
-  status: string;
+  status: OrderStatus;
   stripeSessionId: string;
   createdAt: Date;
   items: { productId: string; name: string; price: number; quantity: number }[];
@@ -101,7 +102,7 @@ function mapOrder(o: DbOrder): Order {
       postalCode: o.shippingPostal,
       country: o.shippingCountry,
     },
-    status: o.status as Order["status"],
+    status: o.status,
     stripeSessionId: o.stripeSessionId,
     createdAt: o.createdAt.toISOString(),
   };

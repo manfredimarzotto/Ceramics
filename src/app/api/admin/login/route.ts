@@ -1,9 +1,22 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createSession, COOKIE_NAME } from "@/lib/auth";
 import { loginSchema } from "@/lib/validation";
+import { checkRateLimit, resetRateLimit } from "@/lib/rate-limit";
+import { timingSafeEqual } from "crypto";
 
 export async function POST(request: NextRequest) {
   try {
+    const ip = request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "unknown";
+    const rateLimitKey = `login:${ip}`;
+    const { allowed, retryAfterSeconds } = checkRateLimit(rateLimitKey);
+
+    if (!allowed) {
+      return NextResponse.json(
+        { error: `Too many login attempts. Try again in ${retryAfterSeconds} seconds.` },
+        { status: 429 }
+      );
+    }
+
     const body = await request.json();
     const result = loginSchema.safeParse(body);
 
@@ -22,10 +35,13 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    if (result.data.password !== adminPassword) {
+    const inputBuf = Buffer.from(result.data.password);
+    const adminBuf = Buffer.from(adminPassword);
+    if (inputBuf.length !== adminBuf.length || !timingSafeEqual(inputBuf, adminBuf)) {
       return NextResponse.json({ error: "Invalid password" }, { status: 401 });
     }
 
+    resetRateLimit(rateLimitKey);
     const token = await createSession();
 
     const response = NextResponse.json({ success: true });
