@@ -4,7 +4,10 @@ export const createProductSchema = z.object({
   name: z.string().min(1, "Name is required").max(200),
   description: z.string().min(1, "Description is required").max(2000),
   price: z.number().positive("Price must be positive").max(99999),
-  image: z.string().min(1).max(500),
+  image: z.string().min(1).max(500).refine(
+    (val) => val.startsWith("/") || val.startsWith("https://"),
+    { message: "Image must be a relative path or HTTPS URL" }
+  ),
   category: z.string().min(1, "Category is required").max(100),
   inStock: z.boolean(),
   featured: z.boolean(),

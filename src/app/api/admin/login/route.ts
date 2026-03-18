@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createSession, COOKIE_NAME } from "@/lib/auth";
 import { loginSchema } from "@/lib/validation";
+import { timingSafeEqual } from "crypto";
 
 export async function POST(request: NextRequest) {
   try {
@@ -22,7 +23,9 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    if (result.data.password !== adminPassword) {
+    const inputBuf = Buffer.from(result.data.password);
+    const adminBuf = Buffer.from(adminPassword);
+    if (inputBuf.length !== adminBuf.length || !timingSafeEqual(inputBuf, adminBuf)) {
       return NextResponse.json({ error: "Invalid password" }, { status: 401 });
     }
 

@@ -2,6 +2,10 @@ import { SignJWT } from "jose/jwt/sign";
 import { jwtVerify } from "jose/jwt/verify";
 import { cookies } from "next/headers";
 
+if (!process.env.ADMIN_SESSION_SECRET) {
+  console.warn("WARNING: ADMIN_SESSION_SECRET is not set. Using insecure default — do not use in production.");
+}
+
 const SECRET = new TextEncoder().encode(
   process.env.ADMIN_SESSION_SECRET || "ceramics-admin-secret-change-me"
 );
