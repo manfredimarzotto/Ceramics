@@ -38,3 +38,13 @@ export async function getSession(): Promise<boolean> {
 }
 
 export { COOKIE_NAME };
+
+/**
+ * Verify admin session from a request's cookies.
+ * Use in API route handlers that need admin-only access.
+ */
+export async function verifyRequestSession(request: { cookies: { get(name: string): { value: string } | undefined } }): Promise<boolean> {
+  const token = request.cookies.get(COOKIE_NAME)?.value;
+  if (!token) return false;
+  return verifySession(token);
+}

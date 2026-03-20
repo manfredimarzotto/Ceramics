@@ -18,18 +18,32 @@ export async function POST(request: NextRequest) {
 
     const { items } = result.data;
 
-    // Validate stock server-side
+    // Validate stock and prices server-side
     const productIds = items.map((item) => item.productId).filter(Boolean) as string[];
-    if (productIds.length > 0) {
-      const products = await prisma.product.findMany({
-        where: { id: { in: productIds } },
-        select: { id: true, name: true, inStock: true },
-      });
+    if (productIds.length === 0) {
+      return NextResponse.json({ error: "No valid products in cart" }, { status: 400 });
+    }
 
-      const outOfStock = products.filter((p) => !p.inStock);
-      if (outOfStock.length > 0) {
+    const dbProducts = await prisma.product.findMany({
+      where: { id: { in: productIds } },
+      select: { id: true, name: true, price: true, inStock: true },
+    });
+
+    const dbProductMap = new Map(dbProducts.map((p) => [p.id, p]));
+
+    const outOfStock = dbProducts.filter((p) => !p.inStock);
+    if (outOfStock.length > 0) {
+      return NextResponse.json(
+        { error: `Out of stock: ${outOfStock.map((p) => p.name).join(", ")}` },
+        { status: 400 }
+      );
+    }
+
+    // Verify all products exist in database
+    for (const item of items) {
+      if (item.productId && !dbProductMap.has(item.productId)) {
         return NextResponse.json(
-          { error: `Out of stock: ${outOfStock.map((p) => p.name).join(", ")}` },
+          { error: `Product not found: ${item.name}` },
           { status: 400 }
         );
       }
@@ -37,22 +51,31 @@ export async function POST(request: NextRequest) {
 
     const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
 
-    const subtotal = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
+    // Use database prices, not client-sent prices
+    const subtotal = items.reduce((sum, item) => {
+      const dbProduct = item.productId ? dbProductMap.get(item.productId) : null;
+      const price = dbProduct ? dbProduct.price : item.price;
+      return sum + price * item.quantity;
+    }, 0);
     const shippingCost = subtotal > 100 ? 0 : 9.99;
 
-    const lineItems: Stripe.Checkout.SessionCreateParams.LineItem[] = items.map((item) => ({
-      price_data: {
-        currency: "usd",
-        product_data: {
-          name: item.name,
-          metadata: {
-            productId: item.productId || "",
+    const lineItems: Stripe.Checkout.SessionCreateParams.LineItem[] = items.map((item) => {
+      const dbProduct = item.productId ? dbProductMap.get(item.productId) : null;
+      const price = dbProduct ? dbProduct.price : item.price;
+      return {
+        price_data: {
+          currency: "usd",
+          product_data: {
+            name: dbProduct?.name || item.name,
+            metadata: {
+              productId: item.productId || "",
+            },
           },
+          unit_amount: Math.round(price * 100),
         },
-        unit_amount: Math.round(item.price * 100),
-      },
-      quantity: item.quantity,
-    }));
+        quantity: item.quantity,
+      };
+    });
 
     if (shippingCost > 0) {
       lineItems.push({

@@ -11,16 +11,24 @@ export default function ProductDetailPage() {
   const { addItem } = useCart();
   const [product, setProduct] = useState<Product | null>(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [added, setAdded] = useState(false);
 
   useEffect(() => {
     fetch(`/api/products/${params.id}`)
-      .then((res) => res.json())
+      .then((res) => {
+        if (!res.ok) throw new Error("Product not found");
+        return res.json();
+      })
       .then((data) => {
+        if (data.error) throw new Error(data.error);
         setProduct(data);
         setLoading(false);
       })
-      .catch(() => setLoading(false));
+      .catch((err) => {
+        setError(err.message);
+        setLoading(false);
+      });
   }, [params.id]);
 
   const handleAddToCart = () => {
@@ -39,10 +47,12 @@ export default function ProductDetailPage() {
     );
   }
 
-  if (!product) {
+  if (error || !product) {
     return (
       <div className="max-w-7xl mx-auto px-4 py-16 text-center">
-        <h1 className="text-2xl font-bold text-gray-900 mb-4">Product Not Found</h1>
+        <h1 className="text-2xl font-bold text-gray-900 mb-4">
+          {error || "Product Not Found"}
+        </h1>
         <Link href="/products" className="text-clay-600 hover:text-clay-700">
           Back to Shop
         </Link>

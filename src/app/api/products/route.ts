@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getProducts, createProduct } from "@/lib/products";
 import { createProductSchema } from "@/lib/validation";
+import { verifyRequestSession } from "@/lib/auth";
 
 export async function GET() {
   try {
@@ -14,6 +15,10 @@ export async function GET() {
 
 export async function POST(request: NextRequest) {
   try {
+    if (!(await verifyRequestSession(request))) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
     const body = await request.json();
     const result = createProductSchema.safeParse(body);
 
