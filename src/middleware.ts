@@ -17,6 +17,7 @@ async function verifyToken(token: string): Promise<boolean> {
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
+  const method = request.method;
 
   // Allow the login page when not authenticated
   if (pathname === "/admin/login") {
@@ -32,7 +33,12 @@ export async function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
-  // Check session for all other admin paths
+  // Allow public read access to products
+  if (method === "GET" && (pathname === "/api/products" || pathname.startsWith("/api/products/"))) {
+    return NextResponse.next();
+  }
+
+  // Check session for all other protected paths
   const token = request.cookies.get(COOKIE_NAME)?.value;
   if (!token || !(await verifyToken(token))) {
     if (pathname.startsWith("/api/")) {
@@ -45,5 +51,13 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/admin/:path*", "/api/admin/:path*", "/api/seed"],
+  matcher: [
+    "/admin/:path*",
+    "/api/admin/:path*",
+    "/api/seed",
+    "/api/products",
+    "/api/products/:path*",
+    "/api/orders",
+    "/api/orders/:path*",
+  ],
 };
