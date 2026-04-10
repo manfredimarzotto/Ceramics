@@ -1,11 +1,20 @@
 "use client";
 
 import Link from "next/link";
+import { useState } from "react";
 import { Product } from "@/types";
 import { useCart } from "@/context/CartContext";
 
 export default function ProductCard({ product }: { product: Product }) {
   const { addItem } = useCart();
+  const [added, setAdded] = useState(false);
+
+  const handleAddToCart = (e: React.MouseEvent) => {
+    e.preventDefault();
+    addItem(product);
+    setAdded(true);
+    setTimeout(() => setAdded(false), 2000);
+  };
 
   return (
     <div className="bg-white rounded-lg shadow-sm overflow-hidden group hover:shadow-md transition-shadow">
@@ -30,11 +39,11 @@ export default function ProductCard({ product }: { product: Product }) {
             ${product.price.toFixed(2)}
           </span>
           <button
-            onClick={() => addItem(product)}
-            disabled={!product.inStock}
+            onClick={handleAddToCart}
+            disabled={!product.inStock || added}
             className="px-3 py-1.5 bg-clay-600 text-white text-sm rounded-md hover:bg-clay-700 transition-colors disabled:bg-gray-300 disabled:cursor-not-allowed"
           >
-            {product.inStock ? "Add to Cart" : "Out of Stock"}
+            {added ? "Added!" : product.inStock ? "Add to Cart" : "Out of Stock"}
           </button>
         </div>
       </div>
